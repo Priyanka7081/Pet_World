@@ -1,9 +1,12 @@
 import express from 'express'
 
-import { getAll,create, update, remove } from "../controllers/categoryController.js";
+import {update,getAll,create,getOne, remove, } from "../controllers/petController.js";
+
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
+
+
 
 const router = express.Router();
 
@@ -42,6 +45,8 @@ const upload = multer({
 //image - Single file
 
 // additionalImage - multiple-5 limit
+router.get('/all',getAll);
+router.get('/get/:id',getOne);
 
 
 router.post('/create',upload.fields([
@@ -55,4 +60,21 @@ router.post('/create',upload.fields([
     }
 
     ]),create);
+
+    //Update
+
+    router.put('/update/:id',upload.fields([
+    {
+        name: "image",
+        maxCount: 1,
+    },
+    {
+        name: "additionalImages",
+        maxCount: 5
+    }
+
+    ]),update);
+
+router.delete('/delete/:id',remove);
 export default router;
+
