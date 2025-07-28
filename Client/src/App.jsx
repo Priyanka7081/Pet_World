@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {createTheme, ThemeProvider} from "@mui/material/styles"
 
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,6 +9,8 @@ import { mainFeaturedPost } from './data';
 import FeaturedPet from './Components/FeaturedPet';
 import Grid from '@mui/material/Grid';
 import Footer from './Components/Footer';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllCategories } from './redux/actions/categories';
 
 const theme = createTheme({
   fontFamily: `"Trebuchet MS", "Helvetica", "Arial", sans-serif`,
@@ -20,6 +22,14 @@ const theme = createTheme({
 })
 
 const App = () => {
+  const dispatch = useDispatch();
+  const allCategories = useSelector((state)=> state.categories.allCategories);
+  console.log({allCategories});
+  
+
+  useEffect(()=>{
+    fetchAllCategories({dispatch})
+  },[]);
   return (
     <ThemeProvider theme={theme}>
     <CssBaseline />
