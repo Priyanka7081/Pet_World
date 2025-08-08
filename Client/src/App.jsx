@@ -11,6 +11,10 @@ import Grid from '@mui/material/Grid';
 import Footer from './Components/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllCategories } from './redux/actions/categories';
+import { BrowserRouter } from 'react-router-dom';
+import { fetchAllPets } from './redux/actions/pets';
+
+const sections = [{title: 'All Pets',url:'/'}]
 
 const theme = createTheme({
   fontFamily: `"Trebuchet MS", "Helvetica", "Arial", sans-serif`,
@@ -24,28 +28,38 @@ const theme = createTheme({
 const App = () => {
   const dispatch = useDispatch();
   const allCategories = useSelector((state)=> state.categories.allCategories);
-  console.log({allCategories});
+  const allPets = useSelector((state)=>state.pets.allPets);
+ 
   
 
   useEffect(()=>{
-    fetchAllCategories({dispatch})
+    fetchAllCategories({dispatch});
+    fetchAllPets({dispatch})
   },[]);
   return (
     <ThemeProvider theme={theme}>
     <CssBaseline />
+    <BrowserRouter>
     <Container maxWidth="lg">
 
-      <Header />
+      <Header allCategories={[...sections,
+        ...allCategories.map((category) =>({
+          title: category?.name,
+          url:`/${category?._id}`,
+        })),
+        ]} />
       <MainFeaturedPost mainFeaturedPost={mainFeaturedPost} />
       
       <Grid container spacing={8}>
-         <FeaturedPet />
-         <FeaturedPet />
+         {allPets.map((pet) =>(
+          <FeaturedPet key={pet._id} pet={pet} />))}
+        
       </Grid>
 
      
      
     </Container>
+    </BrowserRouter>
      <Footer title="Pet Adoption Center"
       description="Every Pet deserves a good Home..." />
 

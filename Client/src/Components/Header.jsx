@@ -3,8 +3,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import logo from '../assets/logo.png';
+import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({ allCategories }) => {
   return (
     <>
       {/* Top toolbar with centered logo + title */}
@@ -24,7 +25,7 @@ const Header = () => {
           variant="h5"
           color="inherit"
         >
-          
+
         </Typography>
       </Toolbar>
 
@@ -34,11 +35,17 @@ const Header = () => {
         variant="dense"
         sx={{ justifyContent: 'space-between', overflowX: 'auto' }}
       >
-        <a href="#">Option1</a>
-        <a href="#">Option2</a>
-        <a href="#">Option3</a>
-        <a href="#">Option4</a>
-        <a href="#">Option5</a>
+        {allCategories.map(category => {
+          return (
+
+            <Link key={category?.url} to={category?.url}>
+              {category?.title}
+            </Link>
+          );
+
+        })}
+
+
       </Toolbar>
     </>
   );
